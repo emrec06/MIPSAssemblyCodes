@@ -1,0 +1,31 @@
+.data
+arr:    .word 7, 2, 5, 3, 1, 8, 6, 4
+
+.text
+    .globl main
+main:
+    la   $t0, arr
+    li   $t1, 8
+
+outer_loop:
+    li   $t2, 0
+
+inner_loop:
+    lw   $t3, 0($t0)
+    lw   $t4, 4($t0)
+    bgt  $t3, $t4, swap
+
+next_inner:
+    addi $t0, $t0, 4
+    addi $t1, $t1, -1
+    bnez $t1, inner_loop
+
+    li   $v0, 10
+    syscall
+
+swap:
+    sw   $t4, 0($t0)
+    sw   $t3, 4($t0)
+    li   $t2, 1
+
+    j next_inner
