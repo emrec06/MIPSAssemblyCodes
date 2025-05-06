@@ -1,0 +1,32 @@
+.data
+arr:    .word 10, 2, 30, 4, 50, 6, 70, 8, 90, 100
+
+.text
+    .globl main
+main:
+    la   $t0, arr
+    li   $t1, 10
+    li   $t2, 0x7FFFFFFF
+    li   $t4, 0x7FFFFFFF
+
+loop:
+    lw   $t3, 0($t0)
+    addi $t0, $t0, 4
+
+    bge  $t3, $t2, check_min2
+    move $t4, $t2
+    move $t2, $t3
+    j next
+
+check_min2:
+    bge  $t3, $t4, next
+    move $t4, $t3
+
+next:
+    addi $t1, $t1, -1
+    bnez $t1, loop
+
+    move $t3, $t4
+
+    li   $v0, 10
+    syscall
